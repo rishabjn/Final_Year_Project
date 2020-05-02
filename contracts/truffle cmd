@@ -1,0 +1,2 @@
+let i = await Main.deployed()
+let a = await web3.eth.getAccounts()
