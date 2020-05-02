@@ -70,36 +70,7 @@ render: async () => {
   App.setLoading(false)
   },
 
-renderTasks: async () =>{
 
-  const taskCount = await App.todoList.taskCount()
-  const $taskTemplate = $('.taskTemplate')
-
-  for (var i = 1;i<=taskCount;i++) {
-    const task = await App.todoList.tasks(i)  //task return an array of Task contents
-    const taskId = task[0].toNumber()
-    const taskContent = task[1]
-    const taskCompleted = task[2]
-
-    //create HTML for the above task[]
-    const $newTaskTemplate = $taskTemplate.clone()
-    $newTaskTemplate.find('.content').html(taskContent)
-    $newTaskTemplate.find('input')
-            .prop('name', taskId)
-            .prop('checked', taskCompleted)
-            .on('click', App.toggleCompleted)
-
-    //put the task in correct list
-    if(taskCompleted){
-      $('#completedTaskList').append($newTaskTemplate)
-    }
-    else{
-      $('#taskList').append($newTaskTemplate)
-    }
-
-    $newTaskTemplate.show()
-  }
-},
   
   setStudent: async() => {
     App.setLoading(true)
@@ -121,13 +92,7 @@ renderTasks: async () =>{
     await App.loadAccount()
     window.location.reload()
   },
-  toggleCompleted: async (e) => {
-    App.setLoading(true)
-    const taskId = e.target.name
-    await App.todoList.toggleCompleted(taskId)
-    window.location.reload()
-  },
-
+  
   setLoading: (boolean) => {
     App.loading = boolean
     const loader = $('#loader')
