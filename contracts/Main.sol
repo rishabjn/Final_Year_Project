@@ -3,7 +3,7 @@ pragma solidity ^0.5.0;
 contract Main {
 
     struct Student{
-        uint usn;
+        string usn;
         string name;
         string certId;
         string college;
@@ -18,14 +18,14 @@ contract Main {
     
    struct Teacher{
        string name;
-       uint id;
+       string id;
        string post;
    }
    mapping (address => Teacher) teachers;
    mapping(address => bool) teachCheck;
    address[] public teacheracc;
    
-    function setStudent(uint u, string memory n, string memory cer, string memory coll)  public returns (bool) {
+    function setStudent(string memory u, string memory n, string memory cer, string memory coll)  public returns (bool) {
         if(studCheck[msg.sender] == true) return false;
         
         if(teachCheck[msg.sender] == true) return false;
@@ -41,14 +41,14 @@ contract Main {
         cerificateHash.push(cer);
         return true;
     }
-    function getStudent(address ins) view public returns (uint, string memory, string memory, string memory){
+    function getStudent(address ins) view public returns (string memory, string memory, string memory, string memory){
         return (students[ins].usn, students[ins].name, students[ins].certId, students[ins].college);
     }
     function getStudentAddress() view public returns (address[] memory)  {
         return studentacc;
     }
 
-   function setTeacher(string memory n, uint i,string memory d) public returns (bool) {
+   function setTeacher(string memory n, string memory i,string memory d) public returns (bool) {
        
         if(teachCheck[msg.sender]==true) return false;
         
@@ -65,7 +65,7 @@ contract Main {
         return teacheracc;
     }
 
-    function getTeacher(address ins) view public returns (string memory, uint, string memory) {
+    function getTeacher(address ins) view public returns (string memory, string memory, string memory) {
         return (teachers[ins].name, teachers[ins].id, teachers[ins].post);
     }
     function destroy (address addr) public {

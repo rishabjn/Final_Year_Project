@@ -104,7 +104,6 @@ renderTasks: async () =>{
     const cert = $('#certid').val()
     const br = $('#brch').val()
     await App.main.setStudent(usn,name,cert,br)
-    window.reload()
   },
 
   setTeacher: async() => {
