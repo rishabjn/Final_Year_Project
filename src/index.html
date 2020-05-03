@@ -121,12 +121,24 @@
               <input type="submit" STYLE="color: #000000">
             </form>  
             <ul id="taskList" class="list-unstyled">
-              <div class="taskTemplate" class="checkbox" style="display: none">
-                <label>
-                  <input type="checkbox" />
-                  <span class="content">Task content goes here...</span>
-                </label>
-              </div>
+              <!-- <div id="loader">
+            <p class="text-center">Loading...</p>
+          </div> -->
+          <BR>
+          <div id="content">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">USN</th>
+                  <th scope="col">Name</th>
+                  <th scope="col">CERTIFICATE ID</th>
+                  <th scope="col">BRANCH</th>
+                </tr>
+              </thead>
+              <tbody id="studentData">
+              </tbody>
+            </table>
+        </div>
         </div>
     </section>
     <section class="container-fluid" id="four">
@@ -136,11 +148,25 @@
               NAME: <input id="name1" type="text" class="form-control" placeholder="Add task..." required>
               DEGREE: <input id="deg" type="text" class="form-control" placeholder="Add task..." required>
               DESIGNATION: <input id="des" type="text" class="form-control" placeholder="Add task..." required>
+              DOMAIN: <input id="domain" type="text" class="form-control" placeholder="Add task..." required>
             <input type="submit" STYLE="color: #000000" >
             </form>  
         </div>
-        <div id = "status"></div>
-            </div>
+        <br>
+        <div id="content">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Name</th>
+                  <th scope="col">DEGREE</th>
+                  <th scope="col">DESIGNATION</th>
+                  <th scope="col">DOMAIN</th>
+                </tr>
+              </thead>
+              <tbody id="teacherData">
+              </tbody>
+            </table>
+        </div>
 
     </section>
     <section id="five">

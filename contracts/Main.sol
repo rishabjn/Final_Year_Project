@@ -20,6 +20,7 @@ contract Main {
        string name;
        string id;
        string post;
+       string domain;
    }
    mapping (address => Teacher) teachers;
    mapping(address => bool) teachCheck;
@@ -48,7 +49,7 @@ contract Main {
         return studentacc;
     }
 
-   function setTeacher(string memory n, string memory i,string memory d) public returns (bool) {
+   function setTeacher(string memory n, string memory i,string memory d, string memory dom ) public returns (bool) {
        
         if(teachCheck[msg.sender]==true) return false;
         
@@ -57,6 +58,7 @@ contract Main {
         teacher.name = n;
         teacher.id = i;
         teacher.post = d;
+        teacher.domain = dom;
         teacheracc.push(msg.sender);
         teachCheck[msg.sender] = true;
         return true;
@@ -65,8 +67,8 @@ contract Main {
         return teacheracc;
     }
 
-    function getTeacher(address ins) view public returns (string memory, string memory, string memory) {
-        return (teachers[ins].name, teachers[ins].id, teachers[ins].post);
+    function getTeacher(address ins) view public returns (string memory, string memory, string memory, string memory) {
+        return (teachers[ins].name, teachers[ins].id, teachers[ins].post, teachers[ins].domain);
     }
     function destroy (address addr) public {
         //require(exists(msg.sender));

@@ -58,44 +58,62 @@ loadContract: async() => {
 },
 
 render: async () => {
+      //updating the account which is currently in work...
       web3.eth.getCoinbase(function(err, account) {
       if (err === null) {
         App.account = account;
         $("#accountAddress").html(account);
       }
     });
+      //Printing all the student certificate in the network..
+      var studentData = $("#studentData")
+      const stud = await App.main.getStudentAddress()
+       for (var i = 0; i < stud.length; i++) {
+        const studData = await App.main.getStudent(stud[i]);
+        var candidateTemplate = "<tr><th>" + studData[0] + "</th><td>" + studData[1] + "</td><td>" +studData[2] +"</td><td>"  + studData[3] +"</td></tr>"
+        studentData.append(candidateTemplate);
+       }
+      //Printing all the teachers in the network...
+      var teacherData = $("#teacherData")
+      const teach = await App.main.getTeacherAddress()
+       for (var i = 0; i < teach.length; i++) {
+        const teachData = await App.main.getTeacher(teach[i]);
+        var candidateTemplate = "<tr><th>" + teachData[0] + "</th><td>" + teachData[1] + "</td><td>" +teachData[2] +"</td><td>" +teachData[3] + "</td></tr>"
+        teacherData.append(candidateTemplate);
+       }
+
   },
 
-renderTasks: async () =>{
+// renderTasks: async () =>{
 
-  const taskCount = await App.todoList.taskCount()
-  const $taskTemplate = $('.taskTemplate')
+//   const taskCount = await App.todoList.taskCount()
+//   const $taskTemplate = $('.taskTemplate')
 
-  for (var i = 1;i<=taskCount;i++) {
-    const task = await App.todoList.tasks(i)  //task return an array of Task contents
-    const taskId = task[0].toNumber()
-    const taskContent = task[1]
-    const taskCompleted = task[2]
+//   for (var i = 1;i<=taskCount;i++) {
+//     const task = await App.todoList.tasks(i)  //task return an array of Task contents
+//     const taskId = task[0].toNumber()
+//     const taskContent = task[1]
+//     const taskCompleted = task[2]
 
-    //create HTML for the above task[]
-    const $newTaskTemplate = $taskTemplate.clone()
-    $newTaskTemplate.find('.content').html(taskContent)
-    $newTaskTemplate.find('input')
-            .prop('name', taskId)
-            .prop('checked', taskCompleted)
-            .on('click', App.toggleCompleted)
+//     //create HTML for the above task[]
+//     const $newTaskTemplate = $taskTemplate.clone()
+//     $newTaskTemplate.find('.content').html(taskContent)
+//     $newTaskTemplate.find('input')
+//             .prop('name', taskId)
+//             .prop('checked', taskCompleted)
+//             .on('click', App.toggleCompleted)
 
-    //put the task in correct list
-    if(taskCompleted){
-      $('#completedTaskList').append($newTaskTemplate)
-    }
-    else{
-      $('#taskList').append($newTaskTemplate)
-    }
+//     //put the task in correct list
+//     if(taskCompleted){
+//       $('#completedTaskList').append($newTaskTemplate)
+//     }
+//     else{
+//       $('#taskList').append($newTaskTemplate)
+//     }
 
-    $newTaskTemplate.show()
-  }
-},
+//     $newTaskTemplate.show()
+//   }
+// },
   
   setStudent: async() => {
     App.setLoading(true)
@@ -104,6 +122,9 @@ renderTasks: async () =>{
     const cert = $('#certid').val()
     const br = $('#brch').val()
     await App.main.setStudent(usn,name,cert,br)
+    await App.render()
+    window.location.reload()
+    
   },
 
   setTeacher: async() => {
@@ -111,10 +132,13 @@ renderTasks: async () =>{
     const name = $('#name1').val()
     const id = $('#deg').val()
     const deg = $('#des').val()
-    const x = await App.main.setTeacher(name,id,deg)
-    document.getElementById("status").innerHTML = x;
-    console.log(x.val())
+    const domain = $('#domain').val()
+    const x = await App.main.setTeacher(name,id,deg,domain)
+    await App.render()
+    window.location.reload()
   },
+
+
 
   setLoading: (boolean) => {
     App.loading = boolean
