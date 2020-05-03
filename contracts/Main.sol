@@ -6,7 +6,7 @@ contract Main {
         string usn;
         string name;
         string certId;
-        string college;
+        string branch;
         address[3] verifier;
         uint count;
     }
@@ -35,7 +35,7 @@ contract Main {
         student.usn = u;
         student.name = n;
         student.certId = cer;
-        student.college = coll;
+        student.branch = coll;
         student.count = 0;
         studentacc.push(msg.sender);
         studCheck[msg.sender] = true;
@@ -43,7 +43,10 @@ contract Main {
         return true;
     }
     function getStudent(address ins) view public returns (string memory, string memory, string memory, string memory){
-        return (students[ins].usn, students[ins].name, students[ins].certId, students[ins].college);
+        return (students[ins].usn, students[ins].name, students[ins].certId, students[ins].branch);
+    }
+    function getVerifyedBy(address ins) view public returns (uint, address,address,address){
+       return (students[ins].count, students[ins].verifier[0],students[ins].verifier[1],students[ins].verifier[2]);
     }
     function getStudentAddress() view public returns (address[] memory)  {
         return studentacc;
@@ -101,7 +104,8 @@ contract Main {
             }
         }
         // If the certificate is not verified by the teacher then it verifies and the teacher address gets added to the student verifier array
-          students[studAdd].verifier[students[studAdd].count++] = msg.sender; 
+          
+          students[studAdd].verifier[students[studAdd].count++] = msg.sender;
           emit Check(msg.sender, studAdd, "Verifier Address added to array[]" ,students[studAdd].count, students[studAdd].verifier);
          return "Verifier Address added to array[]";
     }
