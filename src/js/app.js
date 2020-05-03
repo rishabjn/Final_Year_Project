@@ -81,7 +81,6 @@ render: async () => {
         var candidateTemplate = "<tr><th>" + teachData[0] + "</th><td>" + teachData[1] + "</td><td>" +teachData[2] +"</td><td>" +teachData[3] + "</td></tr>"
         teacherData.append(candidateTemplate);
        }
-
   },
   
   setStudent: async() => {
@@ -97,14 +96,14 @@ render: async () => {
   },
 
   setTeacher: async() => {
-   // App.setLoading(true)
+    App.setLoading(true)
     const name = $('#name1').val()
     const id = $('#deg').val()
     const deg = $('#des').val()
     const domain = $('#domain').val()
     await App.main.setTeacher(name,id,deg,domain)
     await App.render()
-    location.reload()
+    window.location.reload()
   },
 
 
