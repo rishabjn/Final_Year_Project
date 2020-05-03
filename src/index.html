@@ -36,13 +36,12 @@
                         <a class="page-scroll" href="#four">Teacher</a>
                     </li>
                     <li>
-                        <a class="page-scroll" href="#five">Get Students</a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="#six">Get Teachers</a>
+                        <a class="page-scroll" href="#five">Verify</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+                    <li><p id="accountAddress" class="page-scroll"></p>
+                    </li>
                     <li>
                         <a class="page-scroll" data-toggle="modal" title="A free Bootstrap video landing theme" href="#aboutModal">About</a>
                     </li>
@@ -114,7 +113,7 @@
         <div class="container-fluid">
             <div id="content">
     <h1><a target="_blank" >Student Data Upload</a></h1>
-          <form onSubmit="App.setStudent(); return true;">
+          <form onSubmit="App.setStudent(); return false;">
               USN: <input id="usn" type="text" class="form-control"  placeholder="Add task..." required>
               NAME: <input id="name" type="text" class="form-control" placeholder="Add task..." required>
               CERTIFICATE ID: <input id="certid" type="text" class="form-control" placeholder="Add task..." required>
@@ -140,10 +139,14 @@
             <input type="submit" STYLE="color: #000000" >
             </form>  
         </div>
+        <div id = "status"></div>
             </div>
 
     </section>
-    
+    <section id="five">
+        
+        
+    </section>
     
     <footer id="footer">
         <div class="container-fluid">
@@ -205,15 +208,12 @@
                 <p class="text-justify">
                     The resumes submitted to the universities and recruiters contain many counterfeit projects and certiﬁcates. In the current scenario, third party organizations are used to verify these resumes. 
                     In our project, recruiters can directly authenticate the certiﬁcates using our application ”proﬁle veriﬁcation system”. This eliminates the counterfeit certiﬁcates and provides easy authentication
-
-
-        		</p>
-        		<p class="text-center"><a href="https://github.com/rishabjn/Profile-Verification-using-Blockchain" target="_blank">Download Source code at 
+                </p>
+                <p class="text-center"><a href="https://github.com/rishabjn/Profile-Verification-using-Blockchain" target="_blank">Download Source code at 
               </a></p>
-        		<br/>
-        		<button class="btn btn-primary btn-lg center-block" data-dismiss="modal" aria-hidden="true"> OK </button>
-        	</div>
-
+                <br/>
+                <button class="btn btn-primary btn-lg center-block" data-dismiss="modal" aria-hidden="true"> OK </button>
+            </div>
         </div>
         </div>
     </div>

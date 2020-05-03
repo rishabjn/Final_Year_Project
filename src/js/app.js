@@ -1,5 +1,3 @@
-var counter = 0
-
 App = {
   
   loading: false,
@@ -9,7 +7,7 @@ App = {
     await App.loadWeb3()
     await App.loadAccount()
     await App.loadContract()
-    // await App.render()
+    await App.render()
   
   },
 
@@ -49,8 +47,7 @@ App = {
   },
 
  loadAccount: async() => {
-  App.account = web3.eth.accounts[counter];
-  counter++;
+  App.account = web3.eth.accounts[0];
  },
 
 loadContract: async() => {
@@ -61,16 +58,44 @@ loadContract: async() => {
 },
 
 render: async () => {
-  if(App.loading){
-    return
-  }
-  App.setLoading(true)
-  $('#account').html(App.account)
-  await App.renderTasks()
-  App.setLoading(false)
+      web3.eth.getCoinbase(function(err, account) {
+      if (err === null) {
+        App.account = account;
+        $("#accountAddress").html(account);
+      }
+    });
   },
 
+renderTasks: async () =>{
 
+  const taskCount = await App.todoList.taskCount()
+  const $taskTemplate = $('.taskTemplate')
+
+  for (var i = 1;i<=taskCount;i++) {
+    const task = await App.todoList.tasks(i)  //task return an array of Task contents
+    const taskId = task[0].toNumber()
+    const taskContent = task[1]
+    const taskCompleted = task[2]
+
+    //create HTML for the above task[]
+    const $newTaskTemplate = $taskTemplate.clone()
+    $newTaskTemplate.find('.content').html(taskContent)
+    $newTaskTemplate.find('input')
+            .prop('name', taskId)
+            .prop('checked', taskCompleted)
+            .on('click', App.toggleCompleted)
+
+    //put the task in correct list
+    if(taskCompleted){
+      $('#completedTaskList').append($newTaskTemplate)
+    }
+    else{
+      $('#taskList').append($newTaskTemplate)
+    }
+
+    $newTaskTemplate.show()
+  }
+},
   
   setStudent: async() => {
     App.setLoading(true)
@@ -79,20 +104,19 @@ render: async () => {
     const cert = $('#certid').val()
     const br = $('#brch').val()
     await App.main.setStudent(usn,name,cert,br)
-    await App.loadAccount()
-    window.location.reload()
+    window.reload()
   },
 
   setTeacher: async() => {
-    App.setLoading(true)
+   // App.setLoading(true)
     const name = $('#name1').val()
     const id = $('#deg').val()
     const deg = $('#des').val()
-    await App.main.setTeacher(name,id,deg)
-    await App.loadAccount()
-    window.location.reload()
+    const x = await App.main.setTeacher(name,id,deg)
+    document.getElementById("status").innerHTML = x;
+    console.log(x.val())
   },
-  
+
   setLoading: (boolean) => {
     App.loading = boolean
     const loader = $('#loader')

@@ -1,16 +1,17 @@
 pragma solidity ^0.5.0;
 
 contract Main {
-    
+
     struct Student{
         uint usn;
         string name;
         string certId;
         string college;
         address[3] verifier;
-        uint count; 
+        uint count;
     }
     mapping(address => Student) students;
+    mapping(address => bool) studCheck;
     event Check(address indexed _from,address indexed _to, string certId, uint count, address[3] verify);
     address[] public studentacc;
     string[] public cerificateHash;
@@ -21,36 +22,13 @@ contract Main {
        string post;
    }
    mapping (address => Teacher) teachers;
+   mapping(address => bool) teachCheck;
    address[] public teacheracc;
    
     function setStudent(uint u, string memory n, string memory cer, string memory coll)  public returns (bool) {
-        uint tFlag=0;
-        for(uint i=0;i<teacheracc.length;i++){
-            if(msg.sender == teacheracc[i]){
-                tFlag=1;
-                break;
-            }
-            else{
-                tFlag=0;
-            }
-        }
-        if(tFlag==1){
-            return false;
-        }
+        if(studCheck[msg.sender] == true) return false;
         
-        uint sFlag=0;
-        for(uint i=0;i<studentacc.length;i++){
-            if(msg.sender == studentacc[i]){
-                sFlag=1;
-                break;
-            }
-            else{
-                sFlag=0;
-            }
-        }
-        if(sFlag==1){
-            return false;
-        }
+        if(teachCheck[msg.sender] == true) return false;
         
         Student storage student = students[msg.sender];
         student.usn = u;
@@ -59,6 +37,7 @@ contract Main {
         student.college = coll;
         student.count = 0;
         studentacc.push(msg.sender);
+        studCheck[msg.sender] = true;
         cerificateHash.push(cer);
         return true;
     }
@@ -71,39 +50,15 @@ contract Main {
 
    function setTeacher(string memory n, uint i,string memory d) public returns (bool) {
        
-        uint tFlag=0;
-        for(i=0;i<teacheracc.length;i++){
-            if(msg.sender == teacheracc[i]){
-                tFlag=1;
-                break;
-            }
-            else{
-                tFlag=0;
-            }
-        }
-        if(tFlag==1){
-            return false;
-        }
+        if(teachCheck[msg.sender]==true) return false;
         
-        uint sFlag=0;
-        for(i=0;i<studentacc.length;i++){
-            if(msg.sender == studentacc[i]){
-                sFlag=1;
-                break;
-            }
-            else{
-                sFlag=0;
-            }
-        }
-        if(sFlag==1){
-            return false;
-        }
-        
+        if(studCheck[msg.sender] == true) return false;
         Teacher storage teacher = teachers[msg.sender];
         teacher.name = n;
         teacher.id = i;
         teacher.post = d;
         teacheracc.push(msg.sender);
+        teachCheck[msg.sender] = true;
         return true;
    }
    function getTeacherAddress() view public returns (address[] memory)  {
@@ -113,35 +68,20 @@ contract Main {
     function getTeacher(address ins) view public returns (string memory, uint, string memory) {
         return (teachers[ins].name, teachers[ins].id, teachers[ins].post);
     }
-    
+    function destroy (address addr) public {
+        //require(exists(msg.sender));
+        delete students[addr];
+        //emit UserDestroyed(msg.sender);
+  }
     function verify(address studAdd) payable public returns(string memory){
         //if teacher is a valid person in the network
-        uint tFlag=0;
-        for(uint i=0;i<teacheracc.length;i++){
-            if(msg.sender == teacheracc[i]){
-                tFlag=1;
-                break;
-            }
-            else{
-                tFlag=0;
-            }
-        }
-        if(tFlag==0){
+        
+        if(teachCheck[msg.sender]==false){
             emit Check(msg.sender, studAdd, "Teacher Not in Network: Invalid Address",students[studAdd].count, students[studAdd].verifier);
             return "Invalid address";
         }
-        //if the student address is valid in the network
-        uint sFlag=0;
-        for(uint i=0;i<studentacc.length;i++){
-            if(studAdd == studentacc[i]){
-                sFlag=1;
-                break;
-            }
-            else{
-                sFlag=0;
-            }
-        }
-        if(sFlag==0){
+        //if the Certificate address is valid in the network
+        if(studCheck[studAdd] == false){
             emit Check(msg.sender, studAdd, "Certificate Not in Network: Invalid Address",students[studAdd].count, students[studAdd].verifier);
             return "Invalid address";
         }
