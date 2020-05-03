@@ -123,7 +123,7 @@ render: async () => {
     const br = $('#brch').val()
     await App.main.setStudent(usn,name,cert,br)
     await App.render()
-    window.location.reload()
+    location.reload()
     
   },
 
@@ -133,9 +133,9 @@ render: async () => {
     const id = $('#deg').val()
     const deg = $('#des').val()
     const domain = $('#domain').val()
-    const x = await App.main.setTeacher(name,id,deg,domain)
+    await App.main.setTeacher(name,id,deg,domain)
     await App.render()
-    window.location.reload()
+    location.reload()
   },
 
 
