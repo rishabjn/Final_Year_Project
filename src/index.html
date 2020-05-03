@@ -78,17 +78,42 @@
     <section id="two">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2 class="margin-top-0 text-primary">Flexible Layouts</h2>
-                    <hr class="primary">
+                <h1><a target="_blank">Hashing</a></h1>
+            <div class="col-lg-12 text-center">
+            
+            <hr class="primary">
+            <form onsubmit="myHash()">
+            <div class="container">
+
+            <div class="well" data-bind="fileDrag: fileData">
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <img style="height: 125px;" class="img-rounded  thumb" data-bind="attr: { src: fileData().dataURL }, visible: fileData().dataURL">
+                        <div data-bind="ifnot: fileData().dataURL">
+                            <label class="drag-label">Drag file here</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="file" data-bind="fileInput: fileData, customFileInput: {
+                          buttonClass: 'btn btn-success',
+                          fileNameClass: 'disabled form-control',
+                          onClear: onClear,
+                        }" accept="image/*">
+                        </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+        <input type="submit" STYLE="color: #000000">
+     </form>
+   </div>
+</div>
+</div>
         
     </section>
     <section id="three" class="no-padding">
         <div class="container-fluid">
             <div id="content">
+    <h1><a target="_blank" >Student Data Upload</a></h1>
           <form onSubmit="App.setStudent(); return true;">
               USN: <input id="usn" type="text" class="form-control"  placeholder="Add task..." required>
               NAME: <input id="name" type="text" class="form-control" placeholder="Add task..." required>
@@ -107,19 +132,13 @@
     </section>
     <section class="container-fluid" id="four">
         <div class="row">
+            <h1><a target="_blank" >Teacher Data Upload</a></h1>
             <form onSubmit="App.setTeacher(); return true;">
               NAME: <input id="name1" type="text" class="form-control" placeholder="Add task..." required>
               DEGREE: <input id="deg" type="text" class="form-control" placeholder="Add task..." required>
               DESIGNATION: <input id="des" type="text" class="form-control" placeholder="Add task..." required>
             <input type="submit" STYLE="color: #000000" >
             </form>  
-            <ul id="taskList" class="list-unstyled">
-              <div class="taskTemplate" class="checkbox" style="display: none">
-                <label>
-                  <input type="checkbox" />
-                  <span class="content">Task content goes here...</span>
-                </label>
-              </div>
         </div>
             </div>
 
@@ -164,45 +183,45 @@
     <div id="galleryModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
         <div class="modal-content">
-        	<div class="modal-body">
-        		<img src="" id="galleryImage" class="img-responsive" />
-        		<p>
-        		    <br/>
-        		    <button class="btn btn-primary btn-lg center-block" data-dismiss="modal" aria-hidden="true">Close <i class="ion-android-close"></i></button>
-        		</p>
-        	</div>
+            <div class="modal-body">
+                <img src="" id="galleryImage" class="img-responsive" />
+                <p>
+                    <br/>
+                    <button class="btn btn-primary btn-lg center-block" data-dismiss="modal" aria-hidden="true">Close <i class="ion-android-close"></i></button>
+                </p>
+            </div>
         </div>
         </div>
     </div>
     <div id="aboutModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
         <div class="modal-content">
-        	<div class="modal-body">
-        		<h2 class="text-center">Profile Verification</h2>
-        		<h5 class="text-center">
-        		    A free and secure way to verify your profile
+            <div class="modal-body">
+                <h2 class="text-center">Profile Verification</h2>
+                <h5 class="text-center">
+                    A free and secure way to verify your profile
 
-        		</h5>
-        		<p class="text-justify">
-        		    The resumes submitted to the universities and recruiters contain many counterfeit projects and certiﬁcates. In the current scenario, third party organizations are used to verify these resumes. 
+                </h5>
+                <p class="text-justify">
+                    The resumes submitted to the universities and recruiters contain many counterfeit projects and certiﬁcates. In the current scenario, third party organizations are used to verify these resumes. 
                     In our project, recruiters can directly authenticate the certiﬁcates using our application ”proﬁle veriﬁcation system”. This eliminates the counterfeit certiﬁcates and provides easy authentication.
 
-        		</p>
-        		<p class="text-center"><a href="http://www.github.com/rishabjn" target="_blank">Download Source code at GitHub</a></p>
-        		<br/>
-        		<button class="btn btn-primary btn-lg center-block" data-dismiss="modal" aria-hidden="true"> OK </button>
-        	</div>
+                </p>
+                <p class="text-center"><a href="http://www.github.com/rishabjn" target="_blank">Download Source code at GitHub</a></p>
+                <br/>
+                <button class="btn btn-primary btn-lg center-block" data-dismiss="modal" aria-hidden="true"> OK </button>
+            </div>
         </div>
         </div>
     </div>
     <div id="alertModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-sm">
         <div class="modal-content">
-        	<div class="modal-body">
-        		<p class="text-center">You clicked the button, but it doesn't actually go anywhere because this is only a demo.</p>
-        		<p class="text-center"><a href="http://www.bootstrapzero.com">Ethereum Website</a></p>
-        		<br/>
-        	</div>
+            <div class="modal-body">
+                <p class="text-center">You clicked the button, but it doesn't actually go anywhere because this is only a demo.</p>
+                <p class="text-center"><a href="http://www.bootstrapzero.com">Ethereum Website</a></p>
+                <br/>
+            </div>
         </div>
         </div>
     </div>
