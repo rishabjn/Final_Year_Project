@@ -8,7 +8,7 @@ App = {
     await App.loadAccount()
     await App.loadContract()
     await App.render()
-  
+    await App.listenForEvents()
   },
 
   // https://medium.com/metamask/https-medium-com-metamask-breaking-change-injecting-web3-7722797916a8
@@ -55,8 +55,21 @@ loadContract: async() => {
   App.contracts.Main = TruffleContract(main)
   App.contracts.Main.setProvider(App.web3Provider)
   App.main = await App.contracts.Main.deployed()
+  // await App.listenForEvents()
 },
-
+  // Listen for events emitted from the contract
+listenForEvents: function() {
+    App.contracts.Main.deployed().then(function(instance) {
+      // https://github.com/MetaMask/metamask-extension/issues/2393
+      instance.Check({}, {
+        toBlock: 'latest'
+      }).watch(function(error, event) {
+        console.log("event triggered", event)
+        var res = event['args']['certId']
+        $('#logs').append(res)
+      });
+    });
+  },
 render: async () => {
       //updating the account which is currently in work...
       web3.eth.getCoinbase(function(err, account) {
@@ -65,6 +78,7 @@ render: async () => {
         $("#accountAddress").html(account);
       }
     });
+      
       //Printing all the student certificate in the network..
       var studentData = $("#studentData")
       const stud = await App.main.getStudentAddress()
@@ -92,6 +106,7 @@ render: async () => {
     const br = $('#brch').val()
     await App.main.setStudent(usn,name,cert,certInfo,br)
     await App.render()
+
     location.reload()
     
   },
@@ -108,11 +123,11 @@ render: async () => {
   },
 
   verify: async() => {
-    App.setLoading(true)
+    // App.setLoading(true)
+
     const addr = $('#addr').val()
-    const hash = $('#hash').val()
+    const hash = $('#hash').val() 
     const res = await App.main.verify(addr,hash)
-    $("#accountAddress").html(res);
     await App.render()
     window.location.reload()
   },
@@ -123,13 +138,6 @@ render: async () => {
     console.log(loader)
     const content = $('#content')
     console.log(content)
-    if (boolean) {
-      loader.show()
-      content.hide()
-    } else {
-      loader.hide()
-      content.show()
-    }
   }
 }
 
