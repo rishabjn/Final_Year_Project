@@ -97,13 +97,12 @@
       <progress class="progress" id="file-progress" value="0">
         <span>0</span>%
       </progress>
+        </div>
+        </label>
+        </form>
     </div>
-  </label>
-</form>
 </div>
-</div>
-        
-    </section>
+</section>
     <section id="three" class="no-padding">
         <div class="container-fluid">
         <div id="content">
@@ -112,6 +111,7 @@
               USN: <input id="usn" type="text" class="form-control"  placeholder="Add task..." required>
               NAME: <input id="name" type="text" class="form-control" placeholder="Add task..." required>
               CERTIFICATE ID: <input id="certid" type="text" class="form-control" placeholder="Add task..." required>
+              CERTIFICATE INFO: <input id="certinfo" type="text" class="form-control" placeholder="Add task..." required>
               BRANCH: <input id="brch" type="text" class="form-control" placeholder="Add task..." required>
               <input type="submit" STYLE="color: #000000">
             </form>  
@@ -121,9 +121,12 @@
             <table class="table">
               <thead>
                 <tr>
+                  <th scope="col">ADDRESS</th>  
+                  <th scope="col">CERTIFICATE HASH</th>
+                  <th scope="col">COUNT</th>
                   <th scope="col">USN</th>
-                  <th scope="col">Name</th>
-                  <th scope="col">CERTIFICATE ID</th>
+                  <th scope="col">NAME</th>
+                  <th scope="col">CERTIFICATE INFO</th>
                   <th scope="col">BRANCH</th>
                 </tr>
               </thead>
@@ -159,13 +162,34 @@
               </tbody>
             </table>
         </div>
+    </div></div>
+</section>
+
+<section id="five" class="no-padding">
+<div class="container-fluid">
+    <div id="content"> 
+        <h1><a target="_blank" >Verify Portal</a></h1>
+        <form onSubmit="App.verify(); return true;">
+              STUDENT ADDRESS : <input id="addr" type="text" class="form-control" placeholder="Add task..." required>
+              CERTIFICATE HASH: <input id="hash" type="text" class="form-control" placeholder="Add task..." required>
+            <input type="submit" STYLE="color: #000000" >
+            </form>
+            <br>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">USN</th>
+          <th scope="col">CERTIFICATE ID</th>
+          <th scope="col">CERTIFICATE INFO</th> 
+        </tr>
+      </thead>
+      <tbody id="verifyData">
+      </tbody>
+    </table>
+    </div>
 </div>
-    </section>
-    <section id="five">
-        
-        
-    </section>
-    
+</section>
     <footer id="footer">
         <div class="container-fluid">
             
@@ -267,14 +291,11 @@
 function ekUpload(){
   function Init() {
 
-    console.log("Upload Initialised");
-
     var fileSelect    = document.getElementById('file-upload'),
         fileDrag      = document.getElementById('file-drag'),
         submitButton  = document.getElementById('submit-button');
 
     fileSelect.addEventListener('change', fileSelectHandler, false);
-
     // Is XHR2 available?
     var xhr = new XMLHttpRequest();
     if (xhr.upload) {
@@ -287,20 +308,16 @@ function ekUpload(){
 
   function fileDragHover(e) {
     var fileDrag = document.getElementById('file-drag');
-
     e.stopPropagation();
     e.preventDefault();
-
     fileDrag.className = (e.type === 'dragover' ? 'hover' : 'modal-body file-upload');
   }
 
   function fileSelectHandler(e) {
     // Fetch FileList object
     var files = e.target.files || e.dataTransfer.files;
-
     // Cancel event and hover styling
     fileDragHover(e);
-
     // Process all File objects
     for (var i = 0, f; f = files[i]; i++) {
       parseFile(f);
@@ -316,16 +333,13 @@ function ekUpload(){
   }
 
   function parseFile(file) {
-
     console.log(file.name);
     output(
       '<strong>' + encodeURI(file.name) + '</strong>'
     );
-    
     // var fileType = file.type;
     // console.log(fileType);
     var imageName = file.name;
-
     var isGood = (/\.(?=gif|jpg|png|jpeg)/gi).test(imageName);
     if (isGood) {
       document.getElementById('start').classList.add("hidden");
@@ -338,11 +352,6 @@ function ekUpload(){
       img.classList.remove("hidden");
       img.src = src;
       Js.Secure.Core.instance.getMD5FromImage(img,document.getElementById('md5'));
-      // Thumbnail Styled Preview
-      // img = document.getElementById('file-image-styled');
-      // img.classList.remove("hidden");
-      // img.src = src;
-      // Js.Secure.Core.instance.getMD5FromImage(img,document.getElementById('md5styled'));
     }
     else {
       document.getElementById('file-image').classList.add("hidden");
@@ -353,10 +362,8 @@ function ekUpload(){
       document.getElementById("file-upload-form").reset();
     }
   }
-
   function setProgressMaxValue(e) {
     var pBar = document.getElementById('file-progress');
-
     if (e.lengthComputable) {
       pBar.max = e.total;
     }
@@ -364,7 +371,6 @@ function ekUpload(){
 
   function updateFileProgress(e) {
     var pBar = document.getElementById('file-progress');
-
     if (e.lengthComputable) {
       pBar.value = e.loaded;
     }
@@ -387,13 +393,8 @@ function ekUpload(){
         // File received / failed
         xhr.onreadystatechange = function(e) {
           if (xhr.readyState == 4) {
-            // Everything is good!
-
-            // progress.className = (xhr.status == 200 ? "success" : "failure");
-            // document.location.reload(true);
           }
         };
-
         // Start upload
         xhr.open('POST', document.getElementById('file-upload-form').action, true);
         xhr.setRequestHeader('X-File-Name', file.name);

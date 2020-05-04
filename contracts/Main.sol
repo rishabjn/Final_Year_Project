@@ -6,6 +6,7 @@ contract Main {
         string usn;
         string name;
         string certId;
+        string certInfo;
         string branch;
         address[3] verifier;
         uint count;
@@ -14,7 +15,8 @@ contract Main {
     mapping(address => bool) studCheck;
     event Check(address indexed _from,address indexed _to, string certId, uint count, address[3] verify);
     address[] public studentacc;
-    string[] public cerificateHash;
+    //string[] public cerificateHash;
+    mapping(string => bool) cerificateHash;
     
    struct Teacher{
        string name;
@@ -26,7 +28,7 @@ contract Main {
    mapping(address => bool) teachCheck;
    address[] public teacheracc;
    
-    function setStudent(string memory u, string memory n, string memory cer, string memory coll)  public returns (bool) {
+    function setStudent(string memory u, string memory n, string memory cer,string memory ceri, string memory coll)  public returns (bool) {
         if(studCheck[msg.sender] == true) return false;
         
         if(teachCheck[msg.sender] == true) return false;
@@ -35,15 +37,16 @@ contract Main {
         student.usn = u;
         student.name = n;
         student.certId = cer;
+        student.certInfo = ceri;
         student.branch = coll;
         student.count = 0;
         studentacc.push(msg.sender);
         studCheck[msg.sender] = true;
-        cerificateHash.push(cer);
+        cerificateHash[cer] = true;
         return true;
     }
-    function getStudent(address ins) view public returns (string memory, string memory, string memory, string memory){
-        return (students[ins].usn, students[ins].name, students[ins].certId, students[ins].branch);
+    function getStudent(address ins) view public returns (string memory, string memory, string memory, string memory, string memory, uint){
+        return (students[ins].usn, students[ins].name, students[ins].certId,students[ins].certInfo, students[ins].branch,students[ins].count);
     }
     function getVerifyedBy(address ins) view public returns (uint, address,address,address){
        return (students[ins].count, students[ins].verifier[0],students[ins].verifier[1],students[ins].verifier[2]);
@@ -78,9 +81,14 @@ contract Main {
         delete students[addr];
         //emit UserDestroyed(msg.sender);
   }
-    function verify(address studAdd) payable public returns(string memory){
-        //if teacher is a valid person in the network
+    function verify(address studAdd, string memory certHash) payable public returns(string memory){
         
+        //Certificate Hash check 
+       if(cerificateHash[certHash]==false){
+            emit Check(msg.sender, studAdd, "Invalid Certificate Hash",students[studAdd].count, students[studAdd].verifier);
+            return "Invalid Certificate Hash";
+        }
+        //if teacher is a valid person in the network
         if(teachCheck[msg.sender]==false){
             emit Check(msg.sender, studAdd, "Teacher Not in Network: Invalid Address",students[studAdd].count, students[studAdd].verifier);
             return "Invalid address";

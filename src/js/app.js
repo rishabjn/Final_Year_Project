@@ -70,7 +70,7 @@ render: async () => {
       const stud = await App.main.getStudentAddress()
        for (var i = 0; i < stud.length; i++) {
         const studData = await App.main.getStudent(stud[i]);
-        var candidateTemplate = "<tr><th>" + studData[0] + "</th><td>" + studData[1] + "</td><td>" +studData[2] +"</td><td>"  + studData[3] +"</td></tr>"
+        var candidateTemplate = "<tr><th>" + stud[i] + "</th><td>" + studData[2] + "</td><td>" + studData[5]+ "</td><td>" +studData[0] +"</td><td>"  + studData[1] +"</td><td>"+ studData[3] +"</td><td>" +studData[4]  +"</td></tr>"
         studentData.append(candidateTemplate);
        }
       //Printing all the teachers in the network...
@@ -88,8 +88,9 @@ render: async () => {
     const usn = $('#usn').val()
     const name = $('#name').val()
     const cert = $('#certid').val()
+    const certInfo = $('#certinfo').val()
     const br = $('#brch').val()
-    await App.main.setStudent(usn,name,cert,br)
+    await App.main.setStudent(usn,name,cert,certInfo,br)
     await App.render()
     location.reload()
     
@@ -106,7 +107,15 @@ render: async () => {
     window.location.reload()
   },
 
-
+  verify: async() => {
+    App.setLoading(true)
+    const addr = $('#addr').val()
+    const hash = $('#hash').val()
+    const res = await App.main.verify(addr,hash)
+    $("#accountAddress").html(res);
+    await App.render()
+    window.location.reload()
+  },
 
   setLoading: (boolean) => {
     App.loading = boolean
