@@ -83,11 +83,7 @@ contract Main {
   }
     function verify(address studAdd, string memory certHash) payable public returns(string memory){
         
-        //Certificate Hash check 
-       if(cerificateHash[certHash]==false){
-            emit Check(msg.sender, studAdd, "Invalid Certificate Hash",students[studAdd].count, students[studAdd].verifier);
-            return "Invalid Certificate Hash";
-        }
+
         //if teacher is a valid person in the network
         if(teachCheck[msg.sender]==false){
             emit Check(msg.sender, studAdd, "Teacher Not in Network: Invalid Address",students[studAdd].count, students[studAdd].verifier);
@@ -104,6 +100,12 @@ contract Main {
             emit Check(msg.sender, studAdd, "Verified Certificate",students[studAdd].count, students[studAdd].verifier);
             return "Verififed Certificate";
         }
+                //Certificate Hash check 
+       if(cerificateHash[certHash]==false){
+            emit Check(msg.sender, studAdd, "Invalid Certificate Hash",students[studAdd].count, students[studAdd].verifier);
+            return "Invalid Certificate Hash";
+        }
+        
         //For loop is to check if the certificate is verified by teacher before...
         for (uint i=0; i<3; i++){
             if(msg.sender == students[studAdd].verifier[i]){
