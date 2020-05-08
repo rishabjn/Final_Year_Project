@@ -82,7 +82,7 @@ render: async () => {
       //Printing all the student certificate in the network..
       var studentData = $("#studentData")
       const stud = await App.main.getStudentAddress()
-       for (var i = 0; i < stud.length; i++) {
+      for (var i = 0; i < stud.length; i++) {
         const studData = await App.main.getStudent(stud[i]);
         var candidateTemplate = "<tr><th>" + stud[i] + "</th><td>" + studData[2] + "</td><td>" + studData[5]+ "</td><td>" +studData[0] +"</td><td>"  + studData[1] +"</td><td>"+ studData[3] +"</td><td>" +studData[4]  +"</td></tr>"
         studentData.append(candidateTemplate);
@@ -90,11 +90,21 @@ render: async () => {
       //Printing all the teachers in the network...
       var teacherData = $("#teacherData")
       const teach = await App.main.getTeacherAddress()
-       for (var i = 0; i < teach.length; i++) {
+      for (var i = 0; i < teach.length; i++) {
         const teachData = await App.main.getTeacher(teach[i]);
         var candidateTemplate = "<tr><th>" + teachData[0] + "</th><td>" + teachData[1] + "</td><td>" +teachData[2] +"</td><td>" +teachData[3] + "</td></tr>"
         teacherData.append(candidateTemplate);
        }
+       //Printing all the verified cert in the network...
+       var studentData = $("#verifyData")
+      const veri = await App.main.getStudentAddress()
+      for (var i = 0; i < stud.length; i++) {
+        const studData = await App.main.getStudent(stud[i]);
+        if(studData[5]>0){
+        var candidateTemplate = "<tr><th>" +  studData[1]  +"</td><td>"+ studData[0]+"</td><td>"+ studData[3] +"</td><td>" +studData[4]  +"</td></tr>"
+        studentData.append(candidateTemplate);
+        }
+      }
   },
   
   setStudent: async() => {
